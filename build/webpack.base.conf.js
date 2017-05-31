@@ -6,7 +6,7 @@ var vueLoaderConfig = require('./vue-loader.conf')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-var entry = {app:'./src/main.js'}
+var entry = {app:'./src/main.js'}// 主页面路径
 utils.pagesPath.forEach((page) => {
   entry[page] = `./src/views/${page}/main.js`
 })

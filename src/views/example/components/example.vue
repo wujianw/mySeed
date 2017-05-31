@@ -1,5 +1,5 @@
 <template>
-    <div>你好你妈</div>
+    <div>example</div>
 </template>
 
 <script type="text/babel">

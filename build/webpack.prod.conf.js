@@ -14,17 +14,14 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var pages = utils.pagesPath.map((page) => {
   return new HtmlWebpackPlugin({
     filename: path.resolve(config.build.assetsRoot,`pages/${page}.html`),
-    chunks:['manifest','vendor',page],
+    chunks:['manifest','vendor','components',page],
     template: path.resolve(path.join(__dirname, '../src/views'), `${page}/index.html`),
     inject: true,
     minify: {
       removeComments: true,
       collapseWhitespace: true,
       removeAttributeQuotes: false
-      // more options:
-      // https://github.com/kangax/html-minifier#options-quick-reference
     },
-    // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency'
   })
 })
@@ -97,17 +94,21 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     }),
 
-    // 公共组件
+    // 公共组件 大于2个的组件打入components中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'components',
       minChunks: function (module, count) {
-        // any required modules inside node_modules are extracted to vendor
+        console.log( module.resource &&
+            /\.vue$/.test(module.resource) &&
+            module.resource.indexOf(
+                path.join(__dirname, '../src/components')
+            ) === 0)
         return (
             module.resource &&
             /\.vue$/.test(module.resource) &&
             module.resource.indexOf(
                 path.join(__dirname, '../src/components')
-            ) === 0 && count > 2
+            ) === 0
         )
       }
     }),

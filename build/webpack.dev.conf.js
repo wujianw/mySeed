@@ -11,6 +11,9 @@ var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 })
+
+
+// views下文件夹为一个页面项目 开发环境下通过 HtmlWebpackPlugin插件 打入内存
 var pages = utils.pagesPath.map((page) => {
   return new HtmlWebpackPlugin({
     filename: `${page}.html`,
@@ -18,12 +21,17 @@ var pages = utils.pagesPath.map((page) => {
     template: path.resolve(path.join(__dirname, '../src/views'), `${page}/index.html`)
   })
 })
+
+// https://github.com/ampedandwired/html-webpack-plugin
+// 主页面
 pages.push(new HtmlWebpackPlugin({
   filename: 'index.html',
   template: path.join(__dirname, '..','index.html'),
   chunks:["app"],
   inject: true
 }))
+
+
 module.exports = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
@@ -38,7 +46,6 @@ module.exports = merge(baseWebpackConfig, {
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
     ...pages,
     new FriendlyErrorsPlugin()
   ]

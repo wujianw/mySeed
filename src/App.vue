@@ -1,11 +1,17 @@
 <template>
   <div id="app">
+    <cr-dialog></cr-dialog>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
+  import crDialog from "./components/dialog.vue"
+  export default {
+
+  name: 'app',
+  components:{
+    crDialog
+  }
 }
 </script>
 
